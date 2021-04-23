@@ -26,7 +26,7 @@ type Array = []interface{}
 // Arr is a convenience alias for Array
 type Arr = Array
 
-//A is a convenience alias for Array
+// A is a convenience alias for Array
 type A = Arr
 
 // MustMarshal is a wrapper around json.Marshal, that panics in case of an error

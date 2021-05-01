@@ -5,25 +5,39 @@ import (
 	"fmt"
 )
 
-// Anything is a type alias for an interface{}: it represents an any type in JSON
+// Anything is a type alias for an interface{}: it represents an any type in JSON.
 type Anything = interface{}
 
-// Any is a convenience alias for Anything
+// Any is a convenience alias for Anything.
 type Any = Anything
 
-// Object is a type alias for map[string]interface{}: it represents an object in JSON
-type Object = map[string]interface{}
+// Object is a type alias for map[string]interface{}: it represents an object in JSON.
+type Object map[string]interface{}
 
-// Obj is a convenience alias for Object
+// Update copies the keys from another object and returns the current object.
+func (o Object) Update(object Object) Object {
+	for key, value := range object {
+		o[key] = value
+	}
+	return o
+}
+
+// Obj is a convenience alias for Object.
 type Obj = Object
 
-// Array is a type alias for []interface{}: it represents an array in JSON
-type Array = []interface{}
+// Array is a type alias for []interface{}: it represents an array in JSON.
+type Array []interface{}
 
-// Arr is a convenience alias for Array
+// Extend appends the contents of another array and returns the current array.
+func (a Array) Extend(array Array) Array {
+	a = append(a, array...)
+	return a
+}
+
+// Arr is a convenience alias for Array.
 type Arr = Array
 
-// MustMarshal is a wrapper around json.Marshal, that panics in case of an error
+// MustMarshal is a wrapper around json.Marshal, that panics in case of an error.
 func MustMarshal(a Anything) []byte {
 	data, err := json.Marshal(a)
 	if err != nil {

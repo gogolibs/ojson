@@ -21,6 +21,21 @@ var goodCases = []struct {
 		expected: `{"key":"value"}`,
 		actual:   ojson.Object{"key": "value"},
 	},
+	{
+		name:     "object: update",
+		expected: `{"key1":"value1","key2":"value2"}`,
+		actual:   ojson.Object{"key1": "value1"}.Update(ojson.Object{"key2": "value2"}),
+	},
+	{
+		name:     "array: simple",
+		expected: `["one","two"]`,
+		actual:   ojson.Array{"one", "two"},
+	},
+	{
+		name:     "array: extend",
+		expected: `["one","two","three","four"]`,
+		actual:   ojson.Array{"one", "two"}.Extend(ojson.Array{"three", "four"}),
+	},
 }
 
 var badCases = []struct {
@@ -30,7 +45,7 @@ var badCases = []struct {
 }{
 	{
 		name:     "bad JSON",
-		expected: `failed to marshal map[string]interface {}{"field":(*chan string)`,
+		expected: `failed to marshal ojson.Object{"field":(*chan string)`,
 		actual:   ojson.Object{"field": new(chan string)},
 	},
 }

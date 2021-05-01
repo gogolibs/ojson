@@ -12,27 +12,13 @@ type Anything = interface{}
 type Any = Anything
 
 // Object is a type alias for map[string]interface{}: it represents an object in JSON.
-type Object map[string]interface{}
-
-// Update copies the keys from another object and returns the current object.
-func (o Object) Update(object Object) Object {
-	for key, value := range object {
-		o[key] = value
-	}
-	return o
-}
+type Object = map[string]interface{}
 
 // Obj is a convenience alias for Object.
 type Obj = Object
 
 // Array is a type alias for []interface{}: it represents an array in JSON.
-type Array []interface{}
-
-// Extend appends the contents of another array and returns the current array.
-func (a Array) Extend(array Array) Array {
-	a = append(a, array...)
-	return a
-}
+type Array = []interface{}
 
 // Arr is a convenience alias for Array.
 type Arr = Array
@@ -44,4 +30,28 @@ func MustMarshal(a Anything) []byte {
 		panic(fmt.Sprintf(`failed to marshal %#v to JSON`, a))
 	}
 	return data
+}
+
+// Merge merges multiple objects into single object
+func Merge(objects ...Object) Object {
+	result := Object{}
+	for _, object := range objects {
+		for key, value := range object {
+			result[key] = value
+		}
+	}
+	return result
+}
+
+// Concat concatenates multiple arrays into single array
+func Concat(arrays ...Array) Array {
+	n := 0
+	for _, a := range arrays {
+		n += len(a)
+	}
+	result := make(Array, 0, n)
+	for _, a := range arrays {
+		result = append(result, a...)
+	}
+	return result
 }

@@ -22,9 +22,9 @@ var goodCases = []struct {
 		actual:   ojson.Object{"key": "value"},
 	},
 	{
-		name:     "object: update",
+		name:     "object: merge",
 		expected: `{"key1":"value1","key2":"value2"}`,
-		actual:   ojson.Object{"key1": "value1"}.Update(ojson.Object{"key2": "value2"}),
+		actual:   ojson.Merge(ojson.Object{"key1": "value1"}, ojson.Object{"key2": "value2"}),
 	},
 	{
 		name:     "array: simple",
@@ -32,9 +32,9 @@ var goodCases = []struct {
 		actual:   ojson.Array{"one", "two"},
 	},
 	{
-		name:     "array: extend",
+		name:     "array: concat",
 		expected: `["one","two","three","four"]`,
-		actual:   ojson.Array{"one", "two"}.Extend(ojson.Array{"three", "four"}),
+		actual:   ojson.Concat(ojson.Array{"one", "two"}, ojson.Array{"three", "four"}),
 	},
 }
 
@@ -45,7 +45,7 @@ var badCases = []struct {
 }{
 	{
 		name:     "bad JSON",
-		expected: `failed to marshal ojson.Object{"field":(*chan string)`,
+		expected: `failed to marshal map[string]interface {}{"field":(*chan string)`,
 		actual:   ojson.Object{"field": new(chan string)},
 	},
 }
